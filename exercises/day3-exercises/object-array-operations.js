@@ -96,6 +96,7 @@ console.log('--------------------');
 // TODO: 全ユーザーの名前と年齢を「名前（年齢歳）」の形式で出力してください
 console.log('全ユーザー一覧:');
 users.forEach((user) => {
+  console.log(`${user.name}(${user.age})`);
   // ここに実装
 });
 
@@ -103,6 +104,7 @@ users.forEach((user) => {
 console.log('\n部署一覧:');
 users.forEach((user, index) => {
   // ここに実装
+  console.log(`${index}、${user.department}`);
 });
 
 // 演習2: map()で配列変換
@@ -111,20 +113,30 @@ console.log('----------------------');
 
 // TODO: ユーザーの名前だけの配列を作成してください
 const userNames = users.map((user) => {
-  // ここに実装
+  return user.name;
+});
+const userNames2 = users.map(function(user){
+  return user.name;
 });
 console.log('ユーザー名一覧:', userNames);
 
+function calc(a,b){
+  return a + b;
+}
 // TODO: 商品情報を「商品名 - ¥価格」の形式の配列に変換してください
 const productInfo = products.map((product) => {
+  return `${product.name} - ¥${product.price}`;
   // ここに実装
 });
 console.log('商品情報:', productInfo);
 
 // TODO: ユーザーに「若手」または「ベテラン」の判定を追加してください（30歳未満は若手）
-const usersWithCategory = users.map((user) => {
+const usersWithCategory = users.map((user) => ({
+  ...user,
+  young : user.age < 30 ? "若手" : "ベテラン"
+
   // ここに実装
-});
+}));
 console.log('カテゴリ付きユーザー:', usersWithCategory);
 
 // 演習3: filter()で条件抽出
@@ -134,17 +146,20 @@ console.log('-------------------------');
 // TODO: アクティブなユーザーのみを抽出してください
 const activeUsers = users.filter((user) => {
   // ここに実装
+ return user.active;
 });
 console.log('アクティブユーザー:', activeUsers);
 
 // TODO: 30歳以上かつ営業部のユーザーを抽出してください
 const seniorSalesUsers = users.filter((user) => {
+  return user.age >= 30 && user.department === "営業";
   // ここに実装
 });
 console.log('30歳以上の営業部:', seniorSalesUsers);
 
 // TODO: 在庫があり、かつ価格が10000円以下の商品を抽出してください
 const affordableInStockProducts = products.filter((product) => {
+  return product.inStock && product.price <=10000;
   // ここに実装
 });
 console.log('お手頃価格の在庫商品:', affordableInStockProducts);
@@ -156,12 +171,14 @@ console.log('------------------');
 // TODO: ID=3のユーザーを検索してください
 const userById = users.find((user) => {
   // ここに実装
+  return user.id === 3
 });
 console.log('ID=3のユーザー:', userById);
 
 // TODO: 開発部の最初のユーザーを検索してください
 const firstDeveloper = users.find((user) => {
   // ここに実装
+  return user.department === "開発"
 });
 console.log('開発部の最初のユーザー:', firstDeveloper);
 
@@ -169,7 +186,10 @@ console.log('開発部の最初のユーザー:', firstDeveloper);
 const highRatedProduct = products.find((product) => {
   // ここに実装
 });
-console.log('高評価商品:', highRatedProduct);
+const highRatedProduct2 = products.find(function(product){
+  return product.rating >=4.5;
+});
+console.log('高評価商品:', highRatedProduct2);
 
 // 演習5: メソッドチェーン
 console.log('\n演習5: メソッドチェーン');
@@ -177,19 +197,60 @@ console.log('----------------------');
 
 // TODO: アクティブな開発部メンバーの名前一覧を取得してください
 const activeDeveloperNames = users
-  .filter(/* 条件1 */)
-  .filter(/* 条件2 */)
-  .map(/* 変換 */);
+  .filter(function(user){
+    return user.active;
+  })
+  .filter(function(user){
+    return user.department === "開発";
+  })
+  .map(function(user){
+    return user.name;
+  });
 console.log('アクティブな開発部メンバー:', activeDeveloperNames);
 
 // TODO: 在庫のある電子機器の価格一覧を安い順で取得してください
 const electronicsPrices = products
-  .filter(/* 在庫条件 */)
-  .filter(/* カテゴリ条件 */)
-  .map(/* 価格抽出 */)
-  .sort(/* ソート */);
+  .filter(function(product){
+    return product.inStock;
+  })
+  .filter(function(product){
+    return product.category === "電子機器";
+  })
+  .map(function(product){
+    return product.price;
+  })
+  .sort(function(a,b){
+    console.log('aの値は' +a);
+    console.log('bの値は' +b);
+    return a - b;
+  });
 console.log('電子機器価格（安い順）:', electronicsPrices);
 
+const numbers = [40, 100, 1, 5, 25, 10];
+numbers.sort((a, b) => {
+  console.log('aの値は' +a);
+  console.log('bの値は' +b);
+
+  return a - b; // aがbより小さければ負、大きければ正、同じならゼロを返す
+});
+console.log(numbers); // [1, 5, 10, 25, 40, 100]
+
+const data = [
+  { name: 'iPhone', price: 80000, category: 'electronics', rating: 4.5 },
+  { name: 'MacBook', price: 150000, category: 'electronics', rating: 4.8 },
+  { name: 'Coffee', price: 500, category: 'food', rating: 4.2 },
+  { name: 'Book', price: 1500, category: 'education', rating: 4.0 },
+];
+data.sort(function(a,b){
+  return a.price - b.price;
+})
+console.log('データ価格順(安い順):',data);
+
+
+data.sort(function(a,b){
+  return b.rating - a.rating;
+})
+console.log('評価順:',data);
 // 演習6: 複雑な変換
 console.log('\n演習6: 複雑な変換');
 console.log('------------------');
@@ -199,15 +260,36 @@ console.log('------------------');
 const departmentCount = users.reduce((acc, user) => {
   // ここに実装
   return acc;
-}, {});
-console.log('部署別人数:', departmentCount);
+},{});
+const departmentCount2 = users.reduce(function(acc, user){
+  acc[user.department] = (acc[user.department] || 0) +1;
+  return acc;
+},{});
+console.log('部署別人数:', departmentCount2);
 
+const a={
+  name:shimizu,
+  id:123,
+  age:22
+};
+const b=[];
+b.push(1,2,3,4,5,6,7,8,9,10);
+const result = b.filter(function(b){
+  b >= 5;
+});
+console.log('5以上の数：'+result);
 // TODO: カテゴリ別の商品平均価格を計算してください
 const avgPriceByCategory = products.reduce((acc, product) => {
   // ここに実装
   return acc;
 }, {});
-console.log('カテゴリ別平均価格:', avgPriceByCategory);
+const avgPriceByCategory2 = products.reduce(function(acc,b, product){
+  acc[product.category] = (acc[product.category] || 0)+ product.price;
+  b[product.category] = (b[product.category] || 0)+1;
+  const a = acc/b;
+  return a;
+});
+console.log('カテゴリ別平均価格:', avgPriceByCategory2);
 
 // 演習7: 検索・絞り込み機能
 console.log('\n演習7: 検索・絞り込み機能');
