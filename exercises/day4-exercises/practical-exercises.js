@@ -59,6 +59,17 @@ function findEmployeeSafely(employees, id) {
   // - idが数値でない場合はエラーを投げる
   // - 社員が見つからない場合はnullを返す
   // - 見つかった場合は社員オブジェクトを返す
+  if (typeof id !== "number") {
+    throw new Error("idが数値ではありません");
+  }
+  const foundEmployee = employees.find(function(emplo){
+   return emplo.id === id
+  });
+  if (foundEmployee) {
+    return foundEmployee;
+  } else {
+    return null;
+  }
 }
 
 // 1-2. 有効なメールアドレスを持つ社員のみ抽出
@@ -67,6 +78,7 @@ function getEmployeesWithValidEmail(employees) {
   // - emailがnull/undefinedでない
   // - 空文字列でない
   // - @を含む
+  if(employees.email ==)
 }
 
 // 1-3. 部署別統計の計算

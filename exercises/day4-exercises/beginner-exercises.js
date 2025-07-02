@@ -222,7 +222,10 @@ console.log('\n=== 演習5: reduce()の基本 ===');
 function sumNumbers(numbers) {
   // TODO: reduce()を使って数値の合計を計算してください
   return numbers.reduce(function(sumNum,num){
+   console.log("sumNum:"+sumNum);
+   console.log("num:"+num);
     return sumNum+ num;
+    
   });
 }
 

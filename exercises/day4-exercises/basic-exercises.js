@@ -20,12 +20,18 @@ console.log('\n=== 演習1: 配列の基本操作 ===');
 function getAllStudentNames(students) {
   // TODO: map()を使って全ての学生の名前の配列を返してください
   // 例: ['田中', '佐藤', '鈴木', '高橋', '渡辺']
+  return students.map(function(student){
+    return student.name;
+  });
 }
 
 // 1-2. 偶数のみを抽出
 function getEvenNumbers(numbers) {
   // TODO: filter()を使って偶数のみの配列を返してください
   // 例: [2, 4, 6, 8, 10]
+  return numbers.filter(function(num){
+    re
+  })
 }
 
 // 1-3. 数値の合計を計算
