@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM操作演習</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      .test-item {
+        padding: 10px;
+        margin: 5px 0;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+      }
+
+      .highlight {
+        background-color: #ffff00;
+      }
+
+      .active {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      input,
+      textarea {
+        padding: 8px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .form-group {
+        margin: 15px 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .fade-in {
+        opacity: 1;
+        transition: opacity 0.5s ease-in;
+      }
+
+      .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+      }
+
+      .user-card {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      .output {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DOM操作演習</h1>
+
+    <!-- 演習1: 要素の選択 -->
+    <div class="container">
+      <h2>演習1: 要素の選択</h2>
+      <p>
+        <strong>目標:</strong> document.getElementById(),
+        document.querySelector(),
+        document.querySelectorAll()を使って要素を選択する
+      </p>
+      <div id="test-container">
+        <p class="test-item">アイテム1</p>
+        <p class="test-item">アイテム2</p>
+        <p class="test-item">アイテム3</p>
+      </div>
+      <button onclick="testElementSelection()">要素選択テスト</button>
+      <div id="selection-output" class="output"></div>
+    </div>
+
+    <!-- 演習2: 要素の作成と追加 -->
+    <div class="container">
+      <h2>演習2: 要素の作成と追加</h2>
+      <p>
+        <strong>目標:</strong>
+        document.createElement()で要素を作成し、appendChild()で追加する
+      </p>
+      <div id="creation-container"></div>
+      <button onclick="testElementCreation()">要素作成テスト</button>
+      <div id="fruit-container"></div>
+    </div>
+
+    <!-- 演習3: 属性の操作 -->
+    <div class="container">
+      <h2>演習3: 属性の操作</h2>
+      <p>
+        <strong>目標:</strong> setAttribute()とgetAttribute()で属性を操作する
+      </p>
+      <img
+        id="test-image"
+        src="https://via.placeholder.com/150x100"
+        alt="テスト画像"
+        width="150"
+        height="100"
+      />
+      <br />
+      <button onclick="testAttributeManipulation()">属性操作テスト</button>
+      <div id="attribute-output" class="output"></div>
+    </div>
+
+    <!-- 演習4: スタイルの操作 -->
+    <div class="container">
+      <h2>演習4: スタイルの操作</h2>
+      <p>
+        <strong>目標:</strong> element.styleプロパティでCSSスタイルを操作する
+      </p>
+      <div id="style-target" class="test-item">スタイル操作対象</div>
+      <button onclick="testStyleManipulation()">スタイル操作テスト</button>
+      <button onclick="testToggleDisplay()">表示切り替え</button>
+      <button onclick="testFadeIn()">フェードイン</button>
+    </div>
+
+    <!-- 演習5: テキストとHTMLの操作 -->
+    <div class="container">
+      <h2>演習5: テキストとHTMLの操作</h2>
+      <p><strong>目標:</strong> textContent, innerHTMLでコンテンツを操作する</p>
+      <div id="content-target" class="test-item">元のコンテンツ</div>
+      <button onclick="testTextContent()">テキスト設定</button>
+      <button onclick="testInnerHTML()">HTML設定</button>
+      <button onclick="testUserCard()">ユーザーカード生成</button>
+      <div id="user-card-container"></div>
+    </div>
+
+    <!-- 演習6: クラスの操作 -->
+    <div class="container">
+      <h2>演習6: クラスの操作</h2>
+      <p>
+        <strong>目標:</strong> classList.add(), remove(),
+        toggle()でクラスを操作する
+      </p>
+      <div id="class-target" class="test-item">クラス操作対象</div>
+      <button onclick="testAddClass()">クラス追加</button>
+      <button onclick="testRemoveClass()">クラス削除</button>
+      <button onclick="testToggleClass()">クラス切り替え</button>
+      <button onclick="testActiveState()">アクティブ状態切り替え</button>
+      <div id="class-output" class="output"></div>
+    </div>
+
+    <!-- 演習7: 要素の削除 -->
+    <div class="container">
+      <h2>演習7: 要素の削除</h2>
+      <p><strong>目標:</strong> element.remove()で要素を削除する</p>
+      <div id="removal-container">
+        <p class="removable">削除対象1</p>
+        <p class="removable">削除対象2</p>
+        <p class="removable">削除対象3</p>
+      </div>
+      <button onclick="testElementRemoval()">要素削除テスト</button>
+      <button onclick="resetRemovalTest()">リセット</button>
+    </div>
+
+    <!-- 演習8: 実践的なDOM操作 -->
+    <div class="container">
+      <h2>演習8: 実践的なDOM操作</h2>
+      <p>
+        <strong>目標:</strong>
+        複合的なDOM操作でテーブル、フォーム、検索機能を作成する
+      </p>
+      <div id="table-container"></div>
+      <button onclick="testTableCreation()">テーブル作成</button>
+
+      <div id="form-container"></div>
+      <button onclick="testFormCreation()">フォーム作成</button>
+
+      <div id="search-container"></div>
+      <button onclick="testSearchFilter()">検索フィルタ作成</button>
+    </div>
+
+    <!-- 演習用のログ出力エリア -->
+    <div class="container">
+      <h2>ログ出力</h2>
+      <div id="log-output" class="output"></div>
+      <button onclick="clearLog()">ログクリア</button>
+    </div>
+
+    <script>
+      // ログ出力関数（完成版）
+      function log(message) {
+        const logOutput = document.getElementById('log-output');
+        const timestamp = new Date().toLocaleTimeString();
+        logOutput.textContent += `[${timestamp}] ${message}\n`;
+      }
+
+      function clearLog() {
+        document.getElementById('log-output').textContent = '';
+      }
+
+      // 演習1: 要素選択のテスト
+      function testElementSelection() {
+        log('=== 要素選択テスト開始 ===');
+
+        // TODO: 以下を実装してください
+        // 1. IDで要素を選択（test-container）
+        // 2. クラスで要素を選択（.test-item）
+        // 3. 複数要素を選択（.test-item）
+        // 4. 結果を#selection-outputに表示
+
+        log('要素選択テスト: 未実装');
+      }
+
+      // 演習2: 要素作成のテスト
+      function testElementCreation() {
+        log('=== 要素作成テスト開始 ===');
+
+        // TODO: 以下を実装してください
+        // 1. 新しいp要素を作成
+        // 2. テキストとクラスを設定
+        // 3. #creation-containerに追加
+        // 4. フルーツのリスト（ul + li）を#fruit-containerに作成
+
+        log('要素作成テスト: 未実装');
+      }
+
+      // 演習3: 属性操作のテスト
+      function testAttributeManipulation() {
+        log('=== 属性操作テスト開始 ===');
+
+        // TODO: 以下を実装してください
+        // 1. #test-imageの現在の属性を取得
+        // 2. src, alt属性を変更
+        // 3. data-*属性を追加
+        // 4. 結果を#attribute-outputに表示
+
+        log('属性操作テスト: 未実装');
+      }
+
+      // 演習4: スタイル操作のテスト
+      function testStyleManipulation() {
+        log('=== スタイル操作テスト開始 ===');
+
+        // TODO: 以下を実装してください
+        // 1. #style-targetの色、背景色、フォントサイズ、ボーダーを変更
+        // ヒント: element.style.color = 'red';
+
+        log('スタイル操作テスト: 未実装');
+      }
+
+      function testToggleDisplay() {
+        // TODO: 以下を実装してください
+        // 1. #style-targetの表示/非表示を切り替え
+        // ヒント: element.style.display = 'none' または 'block'
+
+        log('表示切り替え: 未実装');
+      }
+
+      function testFadeIn() {
+        // TODO: 以下を実装してください
+        // 1. #style-targetを透明にして、徐々に不透明にする
+        // ヒント: opacity, transition, setTimeoutを使用
+
+        log('フェードイン: 未実装');
+      }
+
+      // 演習5: テキスト・HTML操作のテスト
+      function testTextContent() {
+        // TODO: 以下を実装してください
+        // 1. #content-targetのtextContentを変更
+
+        log('テキストコンテンツ設定: 未実装');
+      }
+
+      function testInnerHTML() {
+        // TODO: 以下を実装してください
+        // 1. #content-targetのinnerHTMLを変更（HTMLタグを含む）
+
+        log('HTMLコンテンツ設定: 未実装');
+      }
+
+      function testUserCard() {
+        // TODO: 以下を実装してください
+        // 1. ユーザーオブジェクトを作成
+        // 2. HTMLテンプレートを作成
+        // 3. #user-card-containerに追加
+
+        log('ユーザーカード生成: 未実装');
+      }
+
+      // 演習6: クラス操作のテスト
+      function testAddClass() {
+        // TODO: 以下を実装してください
+        // 1. #class-targetに'highlight'クラスを追加
+        // 2. updateClassOutput()を呼び出し
+
+        log('クラス追加: 未実装');
+      }
+
+      function testRemoveClass() {
+        // TODO: 以下を実装してください
+        // 1. #class-targetから'highlight'クラスを削除
+        // 2. updateClassOutput()を呼び出し
+
+        log('クラス削除: 未実装');
+      }
+
+      function testToggleClass() {
+        // TODO: 以下を実装してください
+        // 1. #class-targetの'active'クラスを切り替え
+        // 2. updateClassOutput()を呼び出し
+
+        log('クラス切り替え: 未実装');
+      }
+
+      function testActiveState() {
+        // TODO: 以下を実装してください
+        // 1. #class-targetに'active'クラスがあるかチェック
+        // 2. ない場合は追加、ある場合は削除
+        // 3. updateClassOutput()を呼び出し
+
+        log('アクティブ状態切り替え: 未実装');
+      }
+
+      function updateClassOutput() {
+        // TODO: 以下を実装してください
+        // 1. #class-targetの現在のクラス名を取得
+        // 2. #class-outputに表示
+      }
+
+      // 演習7: 要素削除のテスト
+      function testElementRemoval() {
+        // TODO: 以下を実装してください
+        // 1. .removableクラスの要素を取得
+        // 2. 最初の要素を削除
+        // 3. 残りの数をログ出力
+
+        log('要素削除: 未実装');
+      }
+
+      function resetRemovalTest() {
+        // TODO: 以下を実装してください
+        // 1. #removal-containerの中身をリセット
+        // 2. 削除対象の要素を3つ再作成
+
+        log('削除テストリセット: 未実装');
+      }
+
+      // 演習8: 実践的なDOM操作のテスト
+      function testTableCreation() {
+        // TODO: 以下を実装してください
+        // 1. データ配列を作成
+        // 2. table要素を作成
+        // 3. thead, tbodyを作成
+        // 4. データからtr, tdを生成
+        // 5. #table-containerに追加
+
+        log('テーブル作成: 未実装');
+      }
+
+      function testFormCreation() {
+        // TODO: 以下を実装してください
+        // 1. フォーム項目の定義配列を作成
+        // 2. form要素を作成
+        // 3. 各項目にlabel, inputを作成
+        // 4. submit buttonを追加
+        // 5. #form-containerに追加
+
+        log('フォーム作成: 未実装');
+      }
+
+      function testSearchFilter() {
+        // TODO: 以下を実装してください
+        // 1. 検索対象のアイテム配列を作成
+        // 2. input要素（検索欄）を作成
+        // 3. ul要素でアイテムリストを作成
+        // 4. inputのイベントリスナーでフィルタリング機能を実装
+        // 5. #search-containerに追加
+
+        log('検索フィルタ作成: 未実装');
+      }
+
+      // 初期化
+      window.addEventListener('DOMContentLoaded', function () {
+        log('DOM操作演習ページが読み込まれました');
+        log('各ボタンをクリックして演習を開始してください');
+        log('実装が必要な関数にはTODOコメントがあります');
+        updateClassOutput();
+      });
+    </script>
+  </body>
+</html>
