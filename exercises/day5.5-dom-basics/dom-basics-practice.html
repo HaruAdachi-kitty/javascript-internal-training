@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM基礎概念の実習</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        margin: 20px 0;
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+
+      .highlight {
+        background-color: #ffff99;
+        padding: 5px;
+        border-radius: 3px;
+      }
+
+      .card {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: white;
+      }
+
+      .btn {
+        padding: 10px 15px;
+        margin: 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .btn-primary {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .btn-success {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .btn-warning {
+        background-color: #ffc107;
+        color: black;
+      }
+
+      .btn:hover {
+        opacity: 0.8;
+      }
+
+      .output {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        white-space: pre-line;
+        font-family: monospace;
+      }
+
+      .example-box {
+        border: 2px dashed #007bff;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .visible {
+        display: block;
+      }
+
+      .active {
+        background-color: #007bff;
+        color: white;
+        border: 2px solid #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DOM基礎概念の実習</h1>
+    <p>この実習では、document、要素、ID、クラスの概念を実際に体験します。</p>
+
+    <!-- 1. documentオブジェクトの理解 -->
+    <div class="container">
+      <h2>1. documentオブジェクトとは</h2>
+      <p>
+        <strong>document</strong
+        >は、現在のWebページ全体を表すJavaScriptオブジェクトです。
+      </p>
+
+      <button class="btn btn-primary" onclick="exploreDocument()">
+        documentを探索する
+      </button>
+      <div id="document-output" class="output"></div>
+
+      <h3>試してみよう：</h3>
+      <ul>
+        <li>ブラウザの開発者ツール（F12）を開く</li>
+        <li>コンソールタブを選択</li>
+        <li><code>document</code> と入力してEnterを押す</li>
+        <li><code>document.title</code> と入力してEnterを押す</li>
+      </ul>
+    </div>
+
+    <!-- 2. 要素（Element）の理解 -->
+    <div class="container">
+      <h2>2. 要素（Element）とは</h2>
+      <p>HTMLタグで囲まれた部分が<strong>要素</strong>です。</p>
+
+      <div class="example-box">
+        <p>これは段落要素（p要素）です</p>
+        <div>これはdiv要素です</div>
+        <span>これはspan要素です</span>
+        <button class="btn btn-success">これはbutton要素です</button>
+      </div>
+
+      <button class="btn btn-primary" onclick="exploreElements()">
+        要素を調べる
+      </button>
+      <div id="elements-output" class="output"></div>
+    </div>
+
+    <!-- 3. IDの理解 -->
+    <div class="container">
+      <h2>3. ID（アイディー）とは</h2>
+      <p>
+        <strong>ID</strong
+        >は要素に付ける一意の名前です。ページ内で同じIDは1つだけです。
+      </p>
+
+      <div class="example-box">
+        <div id="unique-header">私のIDは「unique-header」です</div>
+        <p id="special-paragraph">私のIDは「special-paragraph」です</p>
+        <button id="magic-button" class="btn btn-warning">
+          私のIDは「magic-button」です
+        </button>
+      </div>
+
+      <button class="btn btn-primary" onclick="demonstrateId()">
+        IDで要素を取得
+      </button>
+      <div id="id-output" class="output"></div>
+    </div>
+
+    <!-- 4. クラスの理解 -->
+    <div class="container">
+      <h2>4. クラス（Class）とは</h2>
+      <p>
+        <strong>クラス</strong
+        >は要素に付ける分類ラベルです。同じクラスを複数の要素に付けられます。
+      </p>
+
+      <div class="example-box">
+        <div class="card">カード1 - cardクラス</div>
+        <div class="card">カード2 - cardクラス</div>
+        <div class="card highlight">カード3 - cardクラス + highlightクラス</div>
+        <p class="highlight">段落 - highlightクラス</p>
+      </div>
+
+      <button class="btn btn-primary" onclick="demonstrateClass()">
+        クラスで要素を取得
+      </button>
+      <button class="btn btn-success" onclick="toggleHighlight()">
+        ハイライト切り替え
+      </button>
+      <div id="class-output" class="output"></div>
+    </div>
+
+    <!-- 5. セレクタの理解 -->
+    <div class="container">
+      <h2>5. セレクタとは</h2>
+      <p>
+        <strong>セレクタ</strong
+        >は要素を指定する方法です。CSSと同じ書き方を使います。
+      </p>
+
+      <div class="example-box">
+        <div id="main-content">
+          <h3 class="title">タイトル</h3>
+          <p class="text">最初の段落</p>
+          <p class="text important">重要な段落</p>
+          <ul class="list">
+            <li>リスト項目1</li>
+            <li class="special">特別なリスト項目2</li>
+            <li>リスト項目3</li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="demonstrateSelectors()">
+        様々なセレクタを試す
+      </button>
+      <div id="selector-output" class="output"></div>
+    </div>
+
+    <!-- 6. 実践練習 -->
+    <div class="container">
+      <h2>6. 実践練習</h2>
+      <p>学んだ概念を使って、実際に要素を操作してみましょう。</p>
+
+      <div class="example-box">
+        <h3 id="practice-title">練習タイトル</h3>
+        <p class="practice-text">練習テキスト1</p>
+        <p class="practice-text">練習テキスト2</p>
+        <p class="practice-text">練習テキスト3</p>
+        <button id="practice-btn" class="btn btn-warning">練習ボタン</button>
+      </div>
+
+      <div>
+        <button class="btn btn-primary" onclick="changeTitle()">
+          タイトルを変更
+        </button>
+        <button class="btn btn-success" onclick="highlightTexts()">
+          テキストをハイライト
+        </button>
+        <button class="btn btn-warning" onclick="toggleButton()">
+          ボタン状態を切り替え
+        </button>
+        <button
+          class="btn"
+          style="background-color: #dc3545; color: white"
+          onclick="resetPractice()"
+        >
+          リセット
+        </button>
+      </div>
+      <div id="practice-output" class="output"></div>
+    </div>
+
+    <!-- 学習のまとめ -->
+    <div class="container">
+      <h2>🎉 学習のまとめ</h2>
+      <div class="card">
+        <h3>今日学んだ重要な概念：</h3>
+        <ul>
+          <li>
+            <strong>document</strong>：Webページ全体を表すJavaScriptオブジェクト
+          </li>
+          <li>
+            <strong>要素（Element）</strong>：HTMLタグで作られる個々の部品
+          </li>
+          <li><strong>ID</strong>：要素の一意な名前（ページに1つだけ）</li>
+          <li><strong>クラス</strong>：要素の分類ラベル（複数使用可能）</li>
+          <li><strong>セレクタ</strong>：要素を指定する方法</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>次のステップ：</h3>
+        <p>これらの基礎概念を理解したら、Day 6のDOM操作演習に進みましょう！</p>
+        <p>より高度な要素の選択、作成、操作方法を学習できます。</p>
+      </div>
+    </div>
+
+    <script>
+      // 1. documentオブジェクトの探索
+      function exploreDocument() {
+        const output = document.getElementById('document-output');
+        const info = `
+=== documentオブジェクトの情報 ===
+ページタイトル: ${document.title}
+URL: ${document.URL}
+ドメイン: ${document.domain}
+最終更新: ${document.lastModified}
+文字エンコーディング: ${document.characterSet}
+
+=== documentで使える主なプロパティ ===
+- document.title: ページタイトル
+- document.URL: 現在のURL
+- document.body: body要素
+- document.head: head要素
+- document.documentElement: html要素
+
+=== documentで使える主なメソッド ===
+- document.getElementById(): IDで要素を取得
+- document.querySelector(): セレクタで要素を取得
+- document.createElement(): 新しい要素を作成
+            `;
+        output.textContent = info;
+      }
+
+      // 2. 要素の調査
+      function exploreElements() {
+        const output = document.getElementById('elements-output');
+        const exampleBox = document.querySelector('.example-box');
+        const children = exampleBox.children;
+
+        let info = '=== この範囲内の要素一覧 ===\n';
+        for (let i = 0; i < children.length; i++) {
+          const element = children[i];
+          info += `${i + 1}. ${
+            element.tagName
+          }要素: "${element.textContent.trim()}"\n`;
+          info += `   - クラス: ${element.className || 'なし'}\n`;
+          info += `   - ID: ${element.id || 'なし'}\n\n`;
+        }
+
+        info += `\n合計: ${children.length}個の要素があります`;
+        output.textContent = info;
+      }
+
+      // 3. IDによる要素取得のデモ
+      function demonstrateId() {
+        const output = document.getElementById('id-output');
+
+        // 各IDの要素を取得
+        const header = document.getElementById('unique-header');
+        const paragraph = document.getElementById('special-paragraph');
+        const button = document.getElementById('magic-button');
+
+        let info = '=== IDで要素を取得した結果 ===\n';
+        info += `document.getElementById('unique-header'):\n`;
+        info += `  タグ名: ${header.tagName}\n`;
+        info += `  テキスト: "${header.textContent}"\n\n`;
+
+        info += `document.getElementById('special-paragraph'):\n`;
+        info += `  タグ名: ${paragraph.tagName}\n`;
+        info += `  テキスト: "${paragraph.textContent}"\n\n`;
+
+        info += `document.getElementById('magic-button'):\n`;
+        info += `  タグ名: ${button.tagName}\n`;
+        info += `  テキスト: "${button.textContent}"\n\n`;
+
+        info += '=== 重要なポイント ===\n';
+        info +=
+          '・IDは一意なので、document.getElementById()は必ず1つの要素を返す\n';
+        info += '・該当するIDがない場合はnullを返す\n';
+        info += '・IDによる検索は最も高速';
+
+        output.textContent = info;
+
+        // 視覚的にハイライト
+        [header, paragraph, button].forEach((el) => {
+          el.style.backgroundColor = '#ffeb3b';
+          setTimeout(() => (el.style.backgroundColor = ''), 2000);
+        });
+      }
+
+      // 4. クラスによる要素取得のデモ
+      function demonstrateClass() {
+        const output = document.getElementById('class-output');
+
+        // クラスで要素を取得
+        const cardElements = document.querySelectorAll('.card');
+        const highlightElements = document.querySelectorAll('.highlight');
+
+        let info = '=== クラスで要素を取得した結果 ===\n';
+        info += `document.querySelectorAll('.card'):\n`;
+        info += `  見つかった要素数: ${cardElements.length}個\n`;
+        cardElements.forEach((el, index) => {
+          info += `  ${index + 1}. "${el.textContent.trim()}"\n`;
+        });
+
+        info += `\ndocument.querySelectorAll('.highlight'):\n`;
+        info += `  見つかった要素数: ${highlightElements.length}個\n`;
+        highlightElements.forEach((el, index) => {
+          info += `  ${index + 1}. ${el.tagName}: "${el.textContent.trim()}"\n`;
+        });
+
+        info += '\n=== 重要なポイント ===\n';
+        info += '・同じクラスを複数の要素に付けられる\n';
+        info += '・querySelectorAll()は配列のような結果を返す\n';
+        info += '・querySelector()は最初の1つだけを返す';
+
+        output.textContent = info;
+      }
+
+      // ハイライトクラスの切り替え
+      function toggleHighlight() {
+        const cardElements = document.querySelectorAll('.card');
+        cardElements.forEach((card) => {
+          card.classList.toggle('active');
+        });
+      }
+
+      // 5. 様々なセレクタのデモ
+      function demonstrateSelectors() {
+        const output = document.getElementById('selector-output');
+
+        let info = '=== 様々なセレクタの実行結果 ===\n';
+
+        // IDセレクタ
+        const mainContent = document.querySelector('#main-content');
+        info += `'#main-content': ${
+          mainContent ? '見つかった' : '見つからない'
+        }\n`;
+
+        // クラスセレクタ
+        const titleElement = document.querySelector('.title');
+        info += `'.title': "${
+          titleElement ? titleElement.textContent : '見つからない'
+        }"\n`;
+
+        // タグセレクタ
+        const allParagraphs = document.querySelectorAll('p');
+        info += `'p': ${allParagraphs.length}個の段落要素\n`;
+
+        // 複合セレクタ
+        const textElements = document.querySelectorAll('.text');
+        info += `'.text': ${textElements.length}個のtext要素\n`;
+
+        // 子要素セレクタ
+        const listItems = document.querySelectorAll('#main-content li');
+        info += `'#main-content li': ${listItems.length}個のリスト項目\n`;
+
+        // 複雑なセレクタ
+        const specialItem = document.querySelector('li.special');
+        info += `'li.special': "${
+          specialItem ? specialItem.textContent : '見つからない'
+        }"\n`;
+
+        info += '\n=== セレクタの種類 ===\n';
+        info += '・#id: ID指定\n';
+        info += '・.class: クラス指定\n';
+        info += '・tag: タグ指定\n';
+        info += '・#id .class: IDの中のクラス\n';
+        info += '・tag.class: タグでクラス付き\n';
+        info += '・:first-child, :nth-child() など';
+
+        output.textContent = info;
+      }
+
+      // 6. 実践練習の関数群
+      function changeTitle() {
+        const title = document.getElementById('practice-title');
+        title.textContent = 'タイトルが変更されました！';
+        title.style.color = '#007bff';
+        logPractice('IDで要素を取得してテキストを変更しました');
+      }
+
+      function highlightTexts() {
+        const texts = document.querySelectorAll('.practice-text');
+        texts.forEach((text, index) => {
+          text.classList.add('highlight');
+          text.textContent = `ハイライトされたテキスト${index + 1}`;
+        });
+        logPractice(
+          `クラスで${texts.length}個の要素を取得してハイライトしました`
+        );
+      }
+
+      function toggleButton() {
+        const button = document.getElementById('practice-btn');
+        button.classList.toggle('active');
+        if (button.classList.contains('active')) {
+          button.textContent = 'アクティブなボタン';
+          logPractice('ボタンをアクティブ状態にしました');
+        } else {
+          button.textContent = '練習ボタン';
+          logPractice('ボタンを通常状態に戻しました');
+        }
+      }
+
+      function resetPractice() {
+        // タイトルをリセット
+        const title = document.getElementById('practice-title');
+        title.textContent = '練習タイトル';
+        title.style.color = '';
+
+        // テキストをリセット
+        const texts = document.querySelectorAll('.practice-text');
+        texts.forEach((text, index) => {
+          text.classList.remove('highlight');
+          text.textContent = `練習テキスト${index + 1}`;
+        });
+
+        // ボタンをリセット
+        const button = document.getElementById('practice-btn');
+        button.classList.remove('active');
+        button.textContent = '練習ボタン';
+
+        logPractice('すべての要素をリセットしました');
+      }
+
+      function logPractice(message) {
+        const output = document.getElementById('practice-output');
+        const timestamp = new Date().toLocaleTimeString();
+        output.textContent += `[${timestamp}] ${message}\n`;
+      }
+
+      // ページ読み込み時の初期化
+      window.addEventListener('DOMContentLoaded', function () {
+        const output = document.getElementById('practice-output');
+        output.textContent =
+          'DOM基礎概念の実習ページが読み込まれました。\n各ボタンをクリックして概念を体験してください。\n\n';
+      });
+    </script>
+  </body>
+</html>
